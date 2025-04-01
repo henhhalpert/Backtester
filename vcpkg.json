@@ -1,0 +1,14 @@
+{
+  "name": "backtester",
+  "version": "0.1.0",
+  "dependencies": [
+    "boost-asio",
+    "boost-beast",
+    "boost-json",
+    "openssl",
+    "boost-system",
+    "nlohmann-json",
+    "curl"
+  ],
+  "builtin-baseline": "0c4cf19224a049cf82f4521e29e39f7bd680440c"
+}

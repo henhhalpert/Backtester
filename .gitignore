@@ -10,3 +10,10 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
+/build
+/out/build/x64-debug
+/.vs
+/Backtester.rar
+/CMakePresets.json
+/vcpkg_installed
+/cmake.txt
