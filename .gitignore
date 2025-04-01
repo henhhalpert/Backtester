@@ -1,3 +1,24 @@
+#folders 
+/build
+/out/build/x64-debug
+/.vs
+/Backtester.rar
+/CMakePresets.json
+/vcpkg_installed
+/cmake.txt
+
+# extensions
+*.o
+*.obj
+*.pdb
+*.exe
+*.dll
+*.lib
+*.so
+*.a
+*.out
+
+# individual files / misc. 
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
@@ -10,10 +31,6 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
-/build
-/out/build/x64-debug
-/.vs
-/Backtester.rar
-/CMakePresets.json
-/vcpkg_installed
-/cmake.txt
+
+
+
