@@ -8,7 +8,8 @@
     "openssl",
     "boost-system",
     "nlohmann-json",
-    "curl"
+    "curl",
+    "libpqxx"
   ],
   "builtin-baseline": "0c4cf19224a049cf82f4521e29e39f7bd680440c"
 }

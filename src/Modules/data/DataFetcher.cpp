@@ -1,6 +1,6 @@
 #include "../include/Modules/Data/DataFetcher.hpp"
 
-void DataFetcher::processAsync()
+void DataFetcher::processAsync(nlohmann::json& data)
 {
     try {
         asio::io_context ioc;
@@ -66,8 +66,8 @@ void DataFetcher::processAsync()
         }
 
         // Parse JSON response
-        nlohmann::json data = nlohmann::json::parse(body);
-        std::cout << "[Raw JSON] " << data.dump(2) << "\n";
+        data = nlohmann::json::parse(body);
+        /*std::cout << "[Raw JSON] " << data.dump(2) << "\n";*/
 
     }
     catch (const std::exception& e) {
@@ -81,9 +81,8 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
     return size * nmemb;
 }
 
-void DataFetcher::process(nlohmann::json& data)
+void DataFetcher::processSync(nlohmann::json& data)
 {
-    processAsync();
     CURL* curl;
     CURLcode res;
 
@@ -138,4 +137,10 @@ void DataFetcher::process(nlohmann::json& data)
     }
 
     curl_global_cleanup();
+}
+
+void DataFetcher::process(nlohmann::json& data)
+{
+    processAsync(data);
+    //processSync(data);
 }

@@ -34,3 +34,5 @@ CMakeUserPresets.json
 
 
 
+/include/Modules/Logger.hpp
+/include/Modules/pch.hpp

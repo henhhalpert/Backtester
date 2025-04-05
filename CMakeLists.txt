@@ -16,6 +16,7 @@ add_executable(Backtester ${SOURCES} ${HEADERS})
 
 # Include directories
 target_include_directories(Backtester PUBLIC include)
+target_include_directories(Backtester PRIVATE ${PostgreSQL_INCLUDE_DIRS})
 
 # Manually set headers as header-only for Visual Studio
 foreach(header ${HEADERS})
@@ -27,15 +28,21 @@ find_package(Boost REQUIRED COMPONENTS asio beast json system)
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
-
+find_package(libpqxx CONFIG REQUIRED)
 
 # Link Boost libraries to your executable
-target_link_libraries(Backtester PRIVATE Boost::asio Boost::beast Boost::json Boost::system OpenSSL::SSL OpenSSL::Crypto)
-target_link_libraries(Backtester PRIVATE CURL::libcurl)
-target_link_libraries(Backtester PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(Backtester PRIVATE 
+    Boost::asio 
+    Boost::beast 
+    Boost::json 
+    Boost::system 
+    OpenSSL::SSL 
+    OpenSSL::Crypto 
+    CURL::libcurl 
+    nlohmann_json::nlohmann_json
+    libpqxx::pqxx
+)
 
 # Proper folder grouping for .cpp and .hpp files
 source_group(TREE "${CMAKE_SOURCE_DIR}/src" PREFIX "src" FILES ${SOURCES})
 source_group(TREE "${CMAKE_SOURCE_DIR}/include" PREFIX "include" FILES ${HEADERS})
-
-

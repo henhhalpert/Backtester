@@ -7,7 +7,7 @@ class DatapipelineManager
 public:
 	DatapipelineManager() = default;
 	void addStage(std::unique_ptr<IDataStage> stage);
-	void run();
+	nlohmann::json run();
 private:
 	std::vector<std::unique_ptr<IDataStage>> stages;
 };

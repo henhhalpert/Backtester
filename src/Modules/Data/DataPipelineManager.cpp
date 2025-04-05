@@ -5,7 +5,7 @@ void DatapipelineManager::addStage(std::unique_ptr<IDataStage> stage)
 	stages.emplace_back(std::move(stage));
 }
 
-void DatapipelineManager::run()
+nlohmann::json DatapipelineManager::run()
 {
 	nlohmann::json data;
 
@@ -13,4 +13,6 @@ void DatapipelineManager::run()
 	{
 		stage->process(data);
 	}
+
+	return data;
 }
