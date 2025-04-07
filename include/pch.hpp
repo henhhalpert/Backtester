@@ -27,5 +27,8 @@ using tcp = asio::ip::tcp;
 // json 
 #include <nlohmann/json.hpp>
 
+// postgres 
+#include <pqxx/pqxx>
 
-
+// python 
+#include <pybind11/embed.h>

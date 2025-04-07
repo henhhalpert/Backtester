@@ -2,7 +2,8 @@
 
 void DataFetcher::processAsync(nlohmann::json& data)
 {
-    try {
+    try
+    {
         asio::io_context ioc;
 
         // Use TLS 1.2 + (instead of deprecated sslv23)
@@ -56,8 +57,6 @@ void DataFetcher::processAsync(nlohmann::json& data)
 
         // Print HTTP status and response body
         std::string body = res.body();
-        /*std::cout << "[HTTP Status] " << res.result_int() << " " << res.reason() << "\n";
-        std::cout << "[Raw Response Body] " << body << "\n";*/
 
         // Check if response is empty
         if (body.empty()) {
@@ -70,7 +69,8 @@ void DataFetcher::processAsync(nlohmann::json& data)
         /*std::cout << "[Raw JSON] " << data.dump(2) << "\n";*/
 
     }
-    catch (const std::exception& e) {
+    catch (const std::exception& e)
+    {
         std::cerr << "[DataFetcher Error] " << e.what() << std::endl;
     }
 }

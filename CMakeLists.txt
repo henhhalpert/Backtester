@@ -29,6 +29,12 @@ find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(libpqxx CONFIG REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Charts)
+
+
+set(Python3_DEBUG_LIBRARY "${Python3_LIBRARY}")
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+find_package(pybind11 REQUIRED)
 
 # Link Boost libraries to your executable
 target_link_libraries(Backtester PRIVATE 
@@ -41,6 +47,9 @@ target_link_libraries(Backtester PRIVATE
     CURL::libcurl 
     nlohmann_json::nlohmann_json
     libpqxx::pqxx
+    Qt5::Charts
+    pybind11::embed
+    Python3::Python
 )
 
 # Proper folder grouping for .cpp and .hpp files
