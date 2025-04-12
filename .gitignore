@@ -36,3 +36,5 @@ CMakeUserPresets.json
 
 /include/Modules/Logger.hpp
 /include/Modules/pch.hpp
+/junk/vcpkg_installed
+/scripts/ohlcv_eda.py

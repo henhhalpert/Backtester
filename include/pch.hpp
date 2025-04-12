@@ -1,5 +1,11 @@
 #pragma once
 
+// general macros  
+constexpr auto DB_NAME = "DB_NAME";;
+constexpr auto DB_USER = "DB_USER";;
+constexpr auto DB_PASS = "DB_PASS";;
+constexpr auto DB_HOST = "DB_HOST";;
+
 // i/o
 #include <iostream>
 #include <cstdlib>
@@ -14,7 +20,6 @@
 #include <boost/beast.hpp>
 #include <boost/json.hpp>
 #include <boost/asio/ssl.hpp>
-
 namespace asio = boost::asio;
 namespace beast = boost::beast;
 namespace http = beast::http;
@@ -30,5 +35,8 @@ using tcp = asio::ip::tcp;
 // postgres 
 #include <pqxx/pqxx>
 
-// python 
+// python binds 
+#include <python.h>
+#include <pybind11/pybind11.h>
 #include <pybind11/embed.h>
+namespace py = pybind11;

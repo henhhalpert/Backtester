@@ -25,13 +25,14 @@ public:
     // Inserts OHLCV data into the database from a JSON object.
     void process(nlohmann::json& json_data) override;
 
-    // fetch data from DB
-    std::vector<std::tuple<std::string, double, double, double, double>> fetch_ohlcv_for_plot(
-        const std::string& symbol, const std::string& start_time, const std::string& end_time);
-
 private:
     // Database connection object.
-    pqxx::connection conn_;
+    //pqxx::connection conn_;
+
+    std::string m_dbName;
+    std::string m_user;
+    std::string m_pass;
+    std::string m_host;
 
     // Helper function to create the OHLCV table and hypertable.
     void create_hyper_table_ohlcv(pqxx::work& txn);

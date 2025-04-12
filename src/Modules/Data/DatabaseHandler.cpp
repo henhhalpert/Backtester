@@ -1,27 +1,15 @@
 #include "../include/Modules/Data/DatabaseHandler.hpp"
 
-static const char* db_name      = std::getenv("DB_NAME");
-static const char* db_user      = std::getenv("DB_USER");
-static const char* db_password  = std::getenv("DB_PASSWORD");
-static const char* db_host      = std::getenv("DB_HOST");
-
 DatabaseHandler::DatabaseHandler(const std::string& db_name, const std::string& user, const std::string& password, const std::string& host)
-    : conn_("dbname=" + db_name + " user=" + user + " password=" + password + " host=" + host)
+    : m_dbName{ db_name }, m_user{ user }, m_pass{ password }, m_host{host}
 { 
     
-    if (!conn_.is_open())
-    {
-        throw std::runtime_error("Failed to open connection to the database");
-    }
 }
 
 // Destructor: Closes the database connection.
 DatabaseHandler::~DatabaseHandler()
 {
-    if (conn_.is_open())
-    {
-        conn_.close();
-    }
+    
 }
 
 void DatabaseHandler::create_hyper_table_ohlcv(pqxx::work& txn) {
@@ -73,7 +61,8 @@ void DatabaseHandler::process(nlohmann::json& json_data)
 {
     try
     {
-        pqxx::work txn(conn_);
+        pqxx::connection conn{ "dbname=" + m_dbName + " user=" + m_user + " password=" + m_pass + " host=" + m_host };
+        pqxx::work txn(conn);
 
         // create hypertable using timescaleDB 
         create_hyper_table_ohlcv(txn);
@@ -93,43 +82,5 @@ void DatabaseHandler::process(nlohmann::json& json_data)
     {
         std::cerr << "DB error (inserting data): " << e.what() << std::endl;
     }
-}
-
-std::vector<std::tuple<std::string, double, double, double, double>>
-DatabaseHandler::fetch_ohlcv_for_plot(const std::string& symbol, const std::string& start_time, const std::string& end_time)
-{
-    std::vector<std::tuple<std::string, double, double, double, double>> result;
-
-    try
-    {
-        pqxx::work txn(conn_);
-        pqxx::result r = txn.exec_params(
-            R"(
-                SELECT time, open, high, low, close
-                FROM ohlcv_data
-                WHERE symbol = $1
-                AND time BETWEEN $2 AND $3
-                ORDER BY time ASC
-            )",
-            symbol, start_time, end_time
-        );
-
-        for (const auto& row : r)
-        {
-            result.emplace_back(
-                row["time"].c_str(),
-                row["open"].as<double>(),
-                row["high"].as<double>(),
-                row["low"].as<double>(),
-                row["close"].as<double>()
-            );
-        }
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "DB error (retrieving data): " << e.what() << std::endl;
-    }
-
-    return result;
 }
 
