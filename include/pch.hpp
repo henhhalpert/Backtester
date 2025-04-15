@@ -1,10 +1,18 @@
 #pragma once
 
 // general macros  
-constexpr auto DB_NAME = "DB_NAME";;
-constexpr auto DB_USER = "DB_USER";;
-constexpr auto DB_PASS = "DB_PASS";;
-constexpr auto DB_HOST = "DB_HOST";;
+constexpr auto DB_NAME			= "DB_NAME";
+constexpr auto DB_USER			= "DB_USER";
+constexpr auto DB_PASS			= "DB_PASSWORD";
+constexpr auto DB_HOST			= "DB_HOST";
+
+// Python 
+constexpr auto PYTHON_DIR		= "C:\\Dev\\Backtester\\scripts";
+// the runner.py is responsible for routing function calls within different .py modules.
+constexpr auto PYTHON_RUNNER	= "runner";
+
+constexpr auto PYTHONPATH		= "PYTHONPATH";
+constexpr auto SYS_BUFFER_SIZE  = 256;
 
 // i/o
 #include <iostream>

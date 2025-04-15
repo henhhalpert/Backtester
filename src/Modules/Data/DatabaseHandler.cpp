@@ -47,12 +47,15 @@ void DatabaseHandler::insert_data(pqxx::work& txn, const nlohmann::json& time_se
         double close = std::stod(values["4. close"].get<std::string>());
         double volume = std::stod(values["5. volume"].get<std::string>());
 
-        txn.exec_params(
-            R"(
+        txn.exec(
+            pqxx::zview
+            {
+                R"(
                 INSERT INTO ohlcv_data (time, symbol, open, high, low, close, volume)
                 VALUES ($1, $2, $3, $4, $5, $6, $7)
-            )",
-            timestamp, symbol, open, high, low, close, volume
+                )"
+            },
+            pqxx::params{ timestamp, symbol, open, high, low, close, volume }
         );
     }
 }

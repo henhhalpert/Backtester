@@ -2,6 +2,8 @@
 project(Backtester VERSION 1.0)
 set(CMAKE_CXX_STANDARD 20)
 
+add_definitions(-D_WIN32_WINNT=0x0A00)
+
 # Auto-collect files
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/include/*.hpp")
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp")
