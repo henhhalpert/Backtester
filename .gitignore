@@ -38,3 +38,5 @@ CMakeUserPresets.json
 /include/Modules/pch.hpp
 /junk/vcpkg_installed
 /scripts/ohlcv_eda.py
+/scripts/__pycache__
+/scripts/eda/__pycache__
