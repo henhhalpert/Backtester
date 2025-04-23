@@ -40,3 +40,10 @@ CMakeUserPresets.json
 /scripts/ohlcv_eda.py
 /scripts/__pycache__
 /scripts/eda/__pycache__
+/scripts/.vs/scripts/CopilotIndices/17.13.431.34963
+/scripts/.vs/scripts/FileContentIndex
+*.suo
+/scripts/ohlcv_eda - GOOD.py
+/scripts/ohlcv_eda.py
+*.pyproj
+*.user

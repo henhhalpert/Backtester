@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import psycopg2
 from matplotlib.dates import DateFormatter
+from sqlalchemy import create_engine
 
 def visualize():
     # DB config
@@ -24,7 +25,8 @@ def visualize():
     """
 
     # store in df 
-    df = pd.read_sql(query, conn, parse_dates=['time'])
+    engine = create_engine("postgresql+psycopg2://postgres:1111@localhost:5432/backtester_local")
+    df = pd.read_sql(query, engine, parse_dates=['time'])
     conn.close()
 
     # Plot

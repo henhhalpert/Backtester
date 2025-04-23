@@ -4,3 +4,12 @@ def run(task, **kwargs):
         visualize(**kwargs)
     else:
         raise ValueError(f"Unknown task: {task}")
+
+    
+def main():
+    # Example usage
+    run("visualize")
+
+
+if __name__ == "__main__":
+    main()
