@@ -38,7 +38,7 @@ void DatabaseHandler::insert_data(pqxx::work& txn, const nlohmann::json& time_se
 {
     for (auto it = time_series.begin(); it != time_series.end(); ++it)
     {
-        const std::string& timestamp = it.key();  // e.g., "2025-04-03 11:00:00"
+        const std::string timestamp = it.key() + " 00:00:00";  // e.g., "2025-04-03 11:00:00"
         const auto& values = it.value();
 
         double open = std::stod(values["1. open"].get<std::string>());
@@ -73,7 +73,7 @@ void DatabaseHandler::process(nlohmann::json& json_data)
         const auto& metadata = json_data["Meta Data"];
         const std::string symbol = metadata["2. Symbol"];
 
-        const auto& time_series = json_data["Time Series (15min)"];
+        const auto& time_series = json_data["Time Series (Daily)"];
 
         // Insert OHLCV data into the database
         insert_data(txn, time_series, symbol);

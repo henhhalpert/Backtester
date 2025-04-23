@@ -16,7 +16,8 @@ void DataFetcher::processAsync(nlohmann::json& data)
         std::string host = "www.alphavantage.co";
         std::string port = "443";
         std::string api_key = "0MYR9FADHDJ34QES";
-        std::string endpoint = "/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=15min&apikey=" + api_key;
+        std::string endpoint = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=GE&apikey=" + api_key + "&outputsize=full";
+        //std::string endpoint = "/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=15min&apikey=" + api_key;
 
         // Set up resolver and SSL stream
         tcp::resolver resolver(ioc);
@@ -92,7 +93,7 @@ void DataFetcher::processSync(nlohmann::json& data)
     if (curl) {
         std::string response_string;
         std::string api_key = "0MYR9FADHDJ34QES";
-        std::string endpoint = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=15min&apikey=" + api_key;
+        std::string endpoint = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=GE&apikey=" + api_key;
 
         // Set the URL
         curl_easy_setopt(curl, CURLOPT_URL, endpoint.c_str());

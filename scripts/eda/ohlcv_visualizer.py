@@ -1,4 +1,4 @@
-import pandas as pd
+from .globals import pd
 import matplotlib.pyplot as plt
 import psycopg2
 from matplotlib.dates import DateFormatter
@@ -20,13 +20,12 @@ def visualize():
     query = """
         SELECT time, open, high, low, close, volume
         FROM ohlcv_data
-        ORDER BY time ASC
-        LIMIT 1000;
+        ORDER BY time ASC;
     """
 
     # store in df 
     engine = create_engine("postgresql+psycopg2://postgres:1111@localhost:5432/backtester_local")
-    df = pd.read_sql(query, engine, parse_dates=['time'])
+    df = pd.read_sql(query, engine, parse_dates=['time'], chunksize=1000)
     conn.close()
 
     # Plot
