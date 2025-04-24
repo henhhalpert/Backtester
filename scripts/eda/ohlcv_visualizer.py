@@ -1,4 +1,4 @@
-from .globals import pd
+import pandas as pd
 import matplotlib.pyplot as plt
 import psycopg2
 from matplotlib.dates import DateFormatter
@@ -25,7 +25,9 @@ def visualize():
 
     # store in df 
     engine = create_engine("postgresql+psycopg2://postgres:1111@localhost:5432/backtester_local")
-    df = pd.read_sql(query, engine, parse_dates=['time'], chunksize=1000)
+    df = pd.read_sql(query, engine, parse_dates=['time'])
+    df['time'] = pd.to_datetime(df['time'], errors='coerce')
+    df = df.dropna(subset=['time', 'close'])
     conn.close()
 
     # Plot

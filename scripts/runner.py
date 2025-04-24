@@ -1,4 +1,5 @@
 def run(task, **kwargs):
+    print("== RUNNER.py == ")
     if task == "eda":
         from eda.ohlcv_visualizer import visualize
         visualize(**kwargs)
@@ -6,6 +7,7 @@ def run(task, **kwargs):
         raise ValueError(f"Unknown task: {task}")
 
     
+
 def main():
     # Example usage
     run("visualize")

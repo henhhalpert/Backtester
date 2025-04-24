@@ -6,10 +6,8 @@ void DataFetcher::processAsync(nlohmann::json& data)
     {
         asio::io_context ioc;
 
-        // Use TLS 1.2 + (instead of deprecated sslv23)
         ssl::context ctx(ssl::context::tlsv12_client);
 
-        // Set default verify paths (uses system-wide CA bundle)
         ctx.set_default_verify_paths();
 
         // Alpha Vantage API settings  
@@ -68,7 +66,6 @@ void DataFetcher::processAsync(nlohmann::json& data)
         // Parse JSON response
         data = nlohmann::json::parse(body);
         /*std::cout << "[Raw JSON] " << data.dump(2) << "\n";*/
-
     }
     catch (const std::exception& e)
     {

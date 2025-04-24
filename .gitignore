@@ -3,7 +3,6 @@
 /out/build/x64-debug
 /.vs
 /Backtester.rar
-/CMakePresets.json
 /vcpkg_installed
 /cmake.txt
 
@@ -30,7 +29,6 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
-CMakeUserPresets.json
 
 
 
@@ -47,3 +45,4 @@ CMakeUserPresets.json
 /scripts/ohlcv_eda.py
 *.pyproj
 *.user
+/out/build/vs2022-x64-clang

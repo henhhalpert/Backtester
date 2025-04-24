@@ -1,6 +1,4 @@
-﻿#include <pch.hpp>
-
-#include <Modules/Core/AppRunner.hpp>
+﻿#include <Modules/Core/AppRunner.hpp>
 
 int main(int argc, char** argv)
 {

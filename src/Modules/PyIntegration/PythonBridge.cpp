@@ -2,7 +2,7 @@
 
 PythonBridge::PythonBridge() :
 	m_guard{}
-{		
+{
 	m_sys = py::module::import("sys");
 	m_sys.attr("path").attr("insert")(0, PYTHON_DIR);
 	m_runner = py::module::import(PYTHON_RUNNER);
