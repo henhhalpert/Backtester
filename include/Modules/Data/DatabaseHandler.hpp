@@ -27,7 +27,7 @@ public:
 
 private:
     // Database connection object.
-    //pqxx::connection conn_;
+    //pqxx::connection m_conn;
 
     std::string m_dbName;
     std::string m_user;
@@ -40,6 +40,8 @@ private:
     // Helper function to insert OHLCV data from JSON into the database.
     void insert_data(pqxx::work& txn, const nlohmann::json& time_series, const std::string& symbol);
 
+    // data validation after inserting to DB
+    void check_data_integrity(pqxx::work& txn);
 };
 
 #endif // DATABASE_HANDLER_HPP

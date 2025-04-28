@@ -44,6 +44,7 @@ using tcp = asio::ip::tcp;
 
 // postgres 
 #include <pqxx/pqxx>
+constexpr auto SCRIPT_INTEGRITY_CHECKS = "integrity_checks.sql";
 
 // python binds 
 #include <python.h>

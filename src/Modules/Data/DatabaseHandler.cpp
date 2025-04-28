@@ -3,7 +3,6 @@
 DatabaseHandler::DatabaseHandler(const std::string& db_name, const std::string& user, const std::string& password, const std::string& host)
     : m_dbName{ db_name }, m_user{ user }, m_pass{ password }, m_host{host}
 { 
-    
 }
 
 // Destructor: Closes the database connection.
@@ -78,8 +77,11 @@ void DatabaseHandler::process(nlohmann::json& json_data)
         // Insert OHLCV data into the database
         insert_data(txn, time_series, symbol);
 
-        txn.commit();
+        //txn.commit();
         std::cout << "Inserted " << time_series.size() << " OHLCV records for " << symbol << std::endl;
+
+        // check validity of data
+        check_data_integrity(txn);
     }
     catch (const std::exception& e)
     {
@@ -87,3 +89,88 @@ void DatabaseHandler::process(nlohmann::json& json_data)
     }
 }
 
+// this will be converted to .sql file once i find a quicker way to i/o. holding this development at a hault for now.
+void DatabaseHandler::check_data_integrity(pqxx::work& txn)
+{
+    try
+    {
+        // Define all integrity check queries
+        const std::vector<std::pair<std::string, std::string>> checks = {
+            { "Missing Values Check", R"(
+                SELECT COUNT(*) AS bad_entry_count
+                FROM ohlcv_data
+                WHERE open IS NULL
+                   OR high IS NULL
+                   OR low IS NULL
+                   OR close IS NULL
+                   OR volume IS NULL
+                   OR time IS NULL;
+            )" },
+            { "Logical Consistency Check", R"(
+                SELECT COUNT(*) AS bad_entry_count
+                FROM ohlcv_data
+                WHERE NOT (
+                    low <= open AND open <= high
+                    AND low <= close AND close <= high
+                    AND low <= high
+                );
+            )" },
+            { "Reasonable Values Check", R"(
+                SELECT COUNT(*) AS bad_entry_count
+                FROM ohlcv_data
+                WHERE open <= 0
+                   OR high <= 0
+                   OR low <= 0
+                   OR close <= 0
+                   OR volume < 0;
+            )" },
+            { "Duplicate Timestamps Check", R"(
+                SELECT COALESCE(SUM(cnt - 1), 0) AS bad_entry_count
+                FROM (
+                    SELECT COUNT(*) AS cnt
+                    FROM ohlcv_data
+                    GROUP BY time
+                    HAVING COUNT(*) > 1
+                ) AS subquery;
+            )" },
+            { "Duplicate Rows Check", R"(
+                SELECT COALESCE(SUM(cnt - 1), 0) AS bad_entry_count
+                FROM (
+                    SELECT COUNT(*) AS cnt
+                    FROM (
+                        SELECT md5(open::text || high::text || low::text || close::text || volume::text) AS row_hash
+                        FROM ohlcv_data
+                    ) AS hashed
+                    GROUP BY row_hash
+                    HAVING COUNT(*) > 1
+                ) AS subquery;
+            )" }
+        };
+
+        bool all_good = true;
+
+        for (const auto& [check_name, query] : checks)
+        {
+            pqxx::result r = txn.exec(query);
+            int bad_entry_count = r[0]["bad_entry_count"].as<int>();
+
+            std::cout << check_name << ": " << bad_entry_count << " bad entries found." << std::endl;
+
+            if (bad_entry_count > 0)
+                all_good = false;
+        }
+
+        if (!all_good)
+        {
+            throw std::runtime_error("Data integrity check failed: some bad entries detected.");
+        }
+        else
+        {
+            std::cout << " All integrity checks passed successfully." << std::endl;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "DB error (integrity check): " << e.what() << std::endl;
+    }
+}
