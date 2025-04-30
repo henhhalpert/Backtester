@@ -1,4 +1,8 @@
 from .data_loader import *
+from .bootstrapper import *
+from metrics.performance import sharpe_ratio
+from strategies.trend_following import moving_average_strategy
+
 import numpy as np
 
 
@@ -47,12 +51,23 @@ def compute_volume_stats(df):
 
 def metrics():
     # data
-    loader = OHLCVDataLoader()
-    df = loader.get_data()
+    # loader = OHLCVDataLoader()
+    # df = loader.get_data()
 
-    # metrics 
-    compute_basic_stats(df)
-    compute_return_stats(df)
-    compute_volatility(df)
-    compute_drawdowns(df)
-    compute_volume_stats(df)
+    # # metrics 
+    # compute_basic_stats(df)
+    # compute_return_stats(df)
+    # compute_volatility(df)
+    # compute_drawdowns(df)
+    # compute_volume_stats(df)
+
+    # bootstrap sharpe ratio check 
+    #load data
+    loader = OHLCVDataLoader()
+    df_in_sample = loader.get_in_sample75()
+
+    # strategy
+    in_sample_strategy = moving_average_strategy(df_in_sample)
+    bootstrapped_srs = bootstrap_sharpe(df_in_sample)
+    in_sample_sr = sharpe_ratio(in_sample_strategy['strategy_returns'].dropna())
+    print(f"In-sample Sharpe Ratio: {in_sample_sr}")

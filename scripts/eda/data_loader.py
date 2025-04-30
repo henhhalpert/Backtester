@@ -30,3 +30,20 @@ class OHLCVDataLoader(metaclass=SingletonMeta):
 
     def get_data(self):
         return self._df
+
+    # in / out sample getters 
+    # 75/25
+    def get_in_sample75(self):
+        split_index = int(len(self._df) * 0.75)
+        return self._df.iloc[:split_index].copy()
+    def get_out_sample25(self):
+        split_index = int(len(self._df) * 0.75)
+        return self._df.iloc[split_index:].copy()
+    # 70/30 
+    def get_in_sample70(self):
+        split_index = int(len(self._df) * 0.70)
+        return self._df.iloc[:split_index].copy()
+    def get_out_sample30(self):
+        split_index = int(len(self._df) * 0.70)
+        return self._df.iloc[split_index:].copy()
+    
