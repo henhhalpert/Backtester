@@ -1,6 +1,6 @@
--- 								========= Purpose of checks: validity of entries before running EDA =========
--- 										     ALL queries when checking data should return nothing. 
---									  If some entries do return something, those entries must be deleted. 
+-- 								========= Responsibility: validity of entries insterted to ohlcv hypertable =========
+-- 										     ALL queries when checking data should return nil. 
+--									  If some entries do return something, those entries must be deleted.
 
 -- #1. Missing Values Check 
 SELECT COUNT(*) AS bad_entry_count

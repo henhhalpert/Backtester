@@ -46,3 +46,7 @@ _deps
 *.pyproj
 *.user
 /out/build/vs2022-x64-clang
+*.db
+*.pyc
+/scripts/eda/globals.py
+/scripts/eda/metrics.py

@@ -4,7 +4,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_definitions(-D_WIN32_WINNT=0x0A00)
 
-
 # == Packages ==
 # Boost packages
 find_package(Boost REQUIRED asio beast system)
@@ -57,8 +56,12 @@ set(HEADERS
     include/pch.hpp
 )
 
+set(SCRIPTS
+    scripts/eda/ohlcv_visualizer.py
+)
+
 # Add executable (add .cpp files + .hpp files)
-add_executable(Backtester ${SOURCES} ${HEADERS})
+add_executable(Backtester ${SOURCES} ${HEADERS} ${SCRIPTS})
 
 # Include directories
 target_include_directories(Backtester PUBLIC include)
@@ -97,3 +100,4 @@ target_link_libraries(Backtester PRIVATE
 # Proper folder grouping for .cpp and .hpp files
 source_group(TREE "${CMAKE_SOURCE_DIR}/src" PREFIX "src" FILES ${SOURCES})
 source_group(TREE "${CMAKE_SOURCE_DIR}/include" PREFIX "include" FILES ${HEADERS})
+source_group(TREE "${CMAKE_SOURCE_DIR}/scripts" PREFIX "scripts" FILES ${SCRIPTS})
