@@ -1,7 +1,9 @@
 from .data_loader import *
 from .bootstrapper import *
-from metrics.performance import sharpe_ratio
-from strategies.trend_following import moving_average_strategy
+from metrics.performance import *
+from strategies.trend_following import *
+from matplotlib.pyplot import show
+from .ohlcv_visualizer import *
 
 import numpy as np
 
@@ -64,10 +66,44 @@ def metrics():
     # bootstrap sharpe ratio check 
     #load data
     loader = OHLCVDataLoader()
-    df_in_sample = loader.get_in_sample75()
+    df = loader.get_last_7_years()
+    
+
+    #print("CV:")
+    #print(f"{relative_standard_dev(df["close"].std(), df["close"].mean())}")
+    #compute_basic_stats(df)
+
+    #df_rolling = rolling_volatility(df, price_col='close', lookback=25)
+    #plot_wrt_time(df_rolling, "rolling_volatility", "EWMA Volatility span")
+    #df_ewma_vol = ewma_volatility(df)
+    #plot_wrt_time(df_ewma_vol, "ewma_volatility", "EWMA Volatility span")
+    #plt.show()
+    #plot_rolling_volatility(df_rolling)
+
+    #sr_rolling = rolling_sharpe_ratio()
 
     # strategy
-    in_sample_strategy = moving_average_strategy(df_in_sample)
-    bootstrapped_srs = bootstrap_sharpe(df_in_sample)
-    in_sample_sr = sharpe_ratio(in_sample_strategy['strategy_returns'].dropna())
-    print(f"In-sample Sharpe Ratio: {in_sample_sr}")
+    in_sample_strategy = ewmac_strategy(df, 32, 128)
+    print(f"no BS = {sharpe_ratio(in_sample_strategy['strategy_returns'].dropna())}")
+    
+    bootstrapped_srs = bootstrap_sharpe(df)
+    print(f"yes BS = {np.median(bootstrapped_srs):.4f}")
+
+
+    '''
+    different SR when using BS, expected lower, got very bery low compared to single sharpe ratio 
+
+    how to move on ? 
+    Plot the distribution of bootstrapped Sharpe ratios — is it centered near 0 or skewed?
+
+    Compute confidence intervals (e.g., 5th and 95th percentiles).
+    
+    Evaluate your strategy across different market regimes (bull, bear, sideways).
+    
+    Consider more robust signals, or strategies with fewer assumptions.
+    '''
+
+    #plot_close_time(df)
+
+    # in_sample_sr = sharpe_ratio(in_sample_strategy['strategy_returns'].dropna())
+    # print(f"In-sample Sharpe Ratio: {in_sample_sr}")

@@ -46,4 +46,15 @@ class OHLCVDataLoader(metaclass=SingletonMeta):
     def get_out_sample30(self):
         split_index = int(len(self._df) * 0.70)
         return self._df.iloc[split_index:].copy()
+    def get_last_7_years(self):
+    # Ensure 'time' is a datetime column with timezone awareness
+        self._df['time'] = pd.to_datetime(self._df['time'])
+
+        # Get timezone info from the column
+        tz = self._df['time'].dt.tz
+
+        # Define a timezone-aware cutoff date
+        cutoff_date = pd.Timestamp.now(tz=tz) - pd.DateOffset(years=7)
+
+        return self._df[self._df['time'] >= cutoff_date]
     

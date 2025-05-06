@@ -62,6 +62,30 @@ def plot_volume(df):
     move_figure(fig, 800, 700)
 
 
+def plot_close_time(df : pd.DataFrame):
+    plt.figure(figsize=(18, 6))
+    plt.plot(df['time'], df['close'], 'o', markersize=3) 
+    #plt.plot(df['time'], df['close'], label='Close Price', color='blue')
+    
+    plt.xlabel("Time")
+    plt.ylabel("Close Price")
+    plt.xlim(df['time'].min(), df['time'].max())  # Force full range on x-axis
+
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+def plot_wrt_time(df, vol_col, title="Time Plot"):
+    plt.figure(figsize=(12, 6))
+    plt.plot(df['time'], df[vol_col], label='Rolling Volatility', color='steelblue')
+    plt.title(title)
+    plt.xlabel('Time')
+    plt.ylabel('Volatility')
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.legend()
+    plt.tight_layout()
+
 def visualize():
     df = fetch_ohlcv_data()
 
